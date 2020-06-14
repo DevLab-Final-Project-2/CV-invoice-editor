@@ -1,12 +1,14 @@
 const express = require('express')
 const expressWinston = require('express-winston');
 const winston = require('winston');
+const cors = require('cors');
 require('dotenv').config()
 require("./db");
 
 const userRouter = require('./routes/user')
 
-const app = express()
+const app = express();
+app.use(cors());
 
 app.use(expressWinston.logger({
   format: winston.format.combine(
