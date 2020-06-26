@@ -2,6 +2,7 @@ const express = require('express')
 const auth = require('../middlewares/auth')
 const cvController = require('../controllers/cv');
 const multer = require("multer");
+const path = require("path");
 
 const cvCon = new cvController.CvController();
 const cv_filedsCon = new cvController.Cv_filedsController();
@@ -50,8 +51,13 @@ router.post('/save_cv_fields', auth, async (req, res) => {
 })
 
 
-const upload = multer({dest: './uploads/images'});
-  
+const storage = multer.diskStorage({
+    destination: './uploads/images',
+    filename: function (req, file, callback) {
+        callback(null, Date.now() +  path.extname(file.originalname));
+      }});
+const upload = multer({ storage: storage });
+
 router.post('/save_cv_photo', auth, upload.single('photo') , async (req, res) => {
     if(req.file) {
         res.json(req.file);
