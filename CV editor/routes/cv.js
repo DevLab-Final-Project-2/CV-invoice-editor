@@ -1,6 +1,7 @@
 const express = require('express')
 const auth = require('../middlewares/auth')
 const cvController = require('../controllers/cv');
+const multer = require("multer");
 
 const cvCon = new cvController.CvController();
 const cv_filedsCon = new cvController.Cv_filedsController();
@@ -8,7 +9,7 @@ const cv_filedsCon = new cvController.Cv_filedsController();
 const router = express.Router()
 
 router.get('/cvs', auth, async (req, res) => {
-    const cvs = await cvCon.findAll()
+    const cvs = await cvCon.findAll({user_id:req.user._id})
     res.status(200).send(cvs)
   })
 
@@ -45,6 +46,18 @@ router.post('/save_cv_fields', auth, async (req, res) => {
         res.status(201).send({ saved_fields })
     } catch (error) {
         res.status(400).send({error: error.message})
+    }
+})
+
+
+const upload = multer({dest: './uploads/images'});
+  
+router.post('/save_cv_photo', auth, upload.single('photo') , async (req, res) => {
+    if(req.file) {
+        res.json(req.file);
+    }
+    else{
+        res.status(400).send({error: "not uploaded"});
     }
 })
 

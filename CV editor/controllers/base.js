@@ -2,10 +2,10 @@ class BaseController {
     constructor(model) {
         this.model = model;
     }
-    findAll() {
+    findAll(query={}) {
         return new Promise((resolve, reject) => {
             try {
-                resolve(this.model.find({}).lean().exec())
+                resolve(this.model.find(query).lean().exec())
             } catch (e) {
                 reject(false)
             }
