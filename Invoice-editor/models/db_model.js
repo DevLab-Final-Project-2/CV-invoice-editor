@@ -5,8 +5,6 @@ const invoiceSchema = new mongoose.Schema({
     y_adress: String,
     y_zip: Number,
 
-    //slika
-
     client_company:  String,
     cient_adress: String,
     client_zip: Number,
@@ -32,3 +30,8 @@ const invoiceSchema = new mongoose.Schema({
 
 var invoice = mongoose.model('invoice', invoiceSchema);
 module.exports = mongoose.model('invoice', invoiceSchema);
+
+module.exports.getinvoices = (callback, limit) => {
+	invoice.find(callback).limit(limit);
+}
+

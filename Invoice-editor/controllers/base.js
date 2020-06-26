@@ -40,6 +40,15 @@ class BaseController {
             }   
         })
     }
+    deleteMany(query){
+        return new Promise((resolve, reject) => {
+            try {
+                resolve(this.model.deleteMany(query))
+            } catch (e) {
+                reject(false)
+            }   
+        })
+    }
     findOne(query) {
         return new Promise((resolve, reject) => {
             try {
